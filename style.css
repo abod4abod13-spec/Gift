@@ -20,7 +20,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
     color: #ffffff;
     position: relative;
 }
@@ -144,6 +144,45 @@ body {
     display: block;
 }
 .age-label { font-size: 0.8rem; color: #ccc; }
+
+/* -------------------------------------------------- */
+/* تنسيق الصورة الذكي والاحترافي (Auto-Responsive Image) */
+/* -------------------------------------------------- */
+.card-image-container, 
+.gift-image-wrapper,
+.image-box {
+    width: 100%;
+    margin: 15px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+/* تحكم ذكي بشاشة الصورة لتظهر كاملة دائماً وبأعلى دقة */
+.card-image-container img,
+.gift-image-wrapper img,
+.image-box img,
+.stage img {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 280px; /* ارتفاع استعراض متناسق وجميل جداً داخل البطاقة */
+    object-fit: contain; /* يمنع قص أي جزء من الصورة نهائياً */
+    border-radius: 16px;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3)); /* ظل احترافي ناعم للصورة */
+    transition: transform 0.3s ease;
+}
+
+.card-image-container img:hover,
+.gift-image-wrapper img:hover {
+    transform: scale(1.02); /* لمسة تفاعلية خفيفة عند التكبير */
+}
+
+/* -------------------------------------------------- */
 
 .message-box {
     margin: 15px 0 25px 0;
