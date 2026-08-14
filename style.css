@@ -145,44 +145,49 @@ body {
 }
 .age-label { font-size: 0.8rem; color: #ccc; }
 
-/* -------------------------------------------------- */
-/* تنسيق الصورة الذكي والاحترافي (Auto-Responsive Image) */
-/* -------------------------------------------------- */
-.card-image-container, 
+/* =================================================== */
+/* 🚀 نظام معالجة الصور العالمي المضمون (Universal Image Engine) */
+/* =================================================== */
+
+/* الحاوية الخارجية للصورة: تتوسع ديناميكياً بدون أي إجبار على ارتفاع ثابت */
+.card-image-container,
 .gift-image-wrapper,
-.image-box {
-    width: 100%;
-    margin: 15px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    border-radius: 20px;
+.image-box,
+div[class*="image"],
+div[id*="image"] {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 15px 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    overflow: visible !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
-/* تحكم ذكي بشاشة الصورة لتظهر كاملة دائماً وبأعلى دقة */
+/* الصورة نفسها: تتأقلم تلقائياً مع الأبعاد الأصلية 100% */
 .card-image-container img,
 .gift-image-wrapper img,
 .image-box img,
-.stage img {
-    width: auto;
-    max-width: 100%;
-    height: auto;
-    max-height: 280px; /* ارتفاع استعراض متناسق وجميل جداً داخل البطاقة */
-    object-fit: contain; /* يمنع قص أي جزء من الصورة نهائياً */
-    border-radius: 16px;
-    display: block;
-    margin: 0 auto;
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3)); /* ظل احترافي ناعم للصورة */
-    transition: transform 0.3s ease;
+.stage img,
+img {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 380px !important; /* يعطي مساحة ممتازة للصور الطولية والعرضية */
+    object-fit: contain !important; /* يمنع قص أي بكسل نهائياً */
+    border-radius: 18px !important;
+    display: block !important;
+    margin: 0 auto !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
 }
 
-.card-image-container img:hover,
-.gift-image-wrapper img:hover {
-    transform: scale(1.02); /* لمسة تفاعلية خفيفة عند التكبير */
-}
-
-/* -------------------------------------------------- */
+/* =================================================== */
 
 .message-box {
     margin: 15px 0 25px 0;
