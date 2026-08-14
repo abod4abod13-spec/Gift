@@ -3,60 +3,975 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هدية خاصة لك ✨</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts & FontAwesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-</head>
-<body>
+    <title>منصة الهدايا التفاعلية الفاخرة | Luxury Gift Experience</title>
+    
+    <!-- Meta Tags optimization for Telegram, WhatsApp & Social Previews -->
+    <meta property="og:title" content="لديك مفاجأة وهدية خاصة ✨">
+    <meta property="og:description" content="افتح الهدية لمشاهدة المفاجأة المخصصة لك!">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1513151233558-d860c5398176?w=600">
+    <meta name="theme-color" content="#0a0a12">
 
-    <!-- خلفية النجوم والتأثيرات الضوئية -->
-    <div class="stars-container"></div>
-    <div class="glow-orb orb-1"></div>
-    <div class="glow-orb orb-2"></div>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800;900&family=Tajawal:wght@400;700;900&family=Reem+Kufi:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <!-- الحاوية الرئيسية -->
-    <main class="main-card">
+    <style>
+        /* === THEME SYSTEM & CSS VARIABLES === */
+        :root {
+            --bg-main: #090a10;
+            --card-bg: rgba(18, 20, 32, 0.65);
+            --border-glow: rgba(255, 215, 0, 0.25);
+            --primary: #ffd700;
+            --primary-glow: rgba(255, 215, 0, 0.4);
+            --accent: #ff2a6d;
+            --text-main: #ffffff;
+            --text-muted: #a0a5c0;
+            --font-family: 'Cairo', sans-serif;
+            --radius-xl: 28px;
+            --radius-lg: 18px;
+        }
+
+        /* Dynamic Theme Profiles */
+        body[data-theme="gold-luxury"] {
+            --bg-main: #08070d;
+            --card-bg: rgba(25, 21, 36, 0.75);
+            --border-glow: rgba(255, 215, 0, 0.3);
+            --primary: #f39c12;
+            --primary-glow: rgba(243, 156, 18, 0.4);
+            --accent: #e74c3c;
+        }
+
+        body[data-theme="romantic-rose"] {
+            --bg-main: #12060c;
+            --card-bg: rgba(35, 15, 25, 0.75);
+            --border-glow: rgba(255, 75, 110, 0.35);
+            --primary: #ff4b6e;
+            --primary-glow: rgba(255, 75, 110, 0.4);
+            --accent: #ff85a1;
+        }
+
+        body[data-theme="cyber-neon"] {
+            --bg-main: #030712;
+            --card-bg: rgba(10, 20, 38, 0.75);
+            --border-glow: rgba(5, 217, 232, 0.35);
+            --primary: #05d9e8;
+            --primary-glow: rgba(5, 217, 232, 0.4);
+            --accent: #ff2a6d;
+        }
+
+        body[data-theme="midnight-purple"] {
+            --bg-main: #0a0518;
+            --card-bg: rgba(24, 14, 45, 0.75);
+            --border-glow: rgba(157, 78, 221, 0.35);
+            --primary: #9d4edd;
+            --primary-glow: rgba(157, 78, 221, 0.4);
+            --accent: #c77dff;
+        }
+
+        /* === GLOBAL RESET & BASE STYLES === */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            font-family: var(--font-family);
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            padding: 20px 12px;
+        }
+
+        /* Background Ambient Glow Orbs */
+        .ambient-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(140px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.5;
+            animation: orbFloat 10s infinite alternate ease-in-out;
+        }
+        .orb-1 {
+            width: 380px;
+            height: 380px;
+            background: var(--primary);
+            top: -50px;
+            right: -50px;
+        }
+        .orb-2 {
+            width: 320px;
+            height: 320px;
+            background: var(--accent);
+            bottom: -50px;
+            left: -50px;
+            animation-delay: -5s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 40px) scale(1.15); }
+        }
+
+        /* Glassmorphism Container Card */
+        .glass-card {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 540px;
+            background: var(--card-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border-glow);
+            border-radius: var(--radius-xl);
+            padding: 32px 24px;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* App Sections Switcher */
+        .app-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .app-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Tajawal', sans-serif;
+            text-align: center;
+        }
+        .title-gradient {
+            background: linear-gradient(135deg, #ffffff 20%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+        }
+
+        /* === FORM & CREATOR STUDIO STYLES === */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .form-label i {
+            color: var(--primary);
+            margin-left: 6px;
+        }
+        .input-control, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius-lg);
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .input-control:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        select option {
+            background-color: #121420;
+            color: #fff;
+        }
+
+        /* Theme Selector Radio Tiles */
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .theme-tile {
+            position: relative;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .theme-tile:hover, .theme-tile.selected {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+        .theme-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Action Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #000;
+            box-shadow: 0 10px 25px var(--primary-glow);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px var(--primary-glow);
+            filter: brightness(1.1);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* === INTERACTIVE GIFT EXPERIENCE VIEWER === */
         
-        <!-- مرحلة 1: صندوق الهدايا المغلق -->
-        <section id="gift-stage" class="stage active">
-            <div class="gift-box-wrapper" onclick="openGift()">
-                <div class="gift-box">
-                    <div class="lid">
-                        <div class="ribbon-bow"></div>
-                    </div>
-                    <div class="box-body"></div>
+        /* 3D Gift Box Animation */
+        .gift-stage-wrapper {
+            text-align: center;
+            padding: 20px 0;
+            cursor: pointer;
+        }
+        .gift-box-3d {
+            width: 150px;
+            height: 150px;
+            margin: 30px auto;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.4s ease;
+            animation: giftBounce 2s infinite ease-in-out;
+        }
+        .gift-box-3d:hover {
+            transform: scale(1.1) rotate(3deg);
+        }
+        .gift-lid {
+            width: 160px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), #ffa500);
+            position: absolute;
+            top: -10px;
+            left: -5px;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            z-index: 3;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .gift-body {
+            width: 150px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--accent), #b0003a);
+            position: absolute;
+            bottom: 0;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+        }
+        .gift-ribbon-v {
+            width: 26px;
+            height: 100%;
+            background: var(--primary);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .gift-ribbon-h {
+            width: 100%;
+            height: 26px;
+            background: var(--primary);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .gift-bow {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        @keyframes giftBounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(-2deg); }
+        }
+
+        /* Opened Lid State */
+        .gift-box-3d.opened .gift-lid {
+            transform: translateY(-120px) rotate(-25deg);
+            opacity: 0;
+        }
+
+        /* Birthday Cake & Candle Interactive Element */
+        .cake-container {
+            display: none;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .cake {
+            width: 120px;
+            height: 80px;
+            background: #fff;
+            border-radius: 12px 12px 4px 4px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: inset 0 -10px 0 var(--accent);
+        }
+        .candle {
+            width: 12px;
+            height: 35px;
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, var(--primary) 5px, var(--primary) 10px);
+            margin: 0 auto;
+            position: relative;
+            top: -35px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .flame {
+            width: 16px;
+            height: 24px;
+            background: #ff9d00;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -24px;
+            left: -2px;
+            box-shadow: 0 0 15px #ff9d00, 0 0 25px #ff5500;
+            animation: flameFlicker 0.1s infinite alternate;
+        }
+        .flame.extinguished {
+            display: none;
+        }
+        @keyframes flameFlicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.1) rotate(2deg); }
+        }
+
+        /* Main Reveal Content Display */
+        .person-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-glow);
+            padding: 6px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        .person-name {
+            font-size: 2.3rem;
+            font-weight: 900;
+            margin-bottom: 6px;
+        }
+        .person-meta {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        /* Photo Display Frame */
+        .photo-frame {
+            width: 100%;
+            max-height: 260px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 2px solid var(--border-glow);
+            margin: 20px 0;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Message Box */
+        .message-card {
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            text-align: right;
+            margin: 20px 0;
+            position: relative;
+            white-space: pre-line;
+        }
+        .sender-tag {
+            text-align: left;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 12px;
+            font-size: 0.95rem;
+        }
+
+        /* Floating Audio Controls */
+        .audio-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 10px 16px;
+            border-radius: var(--radius-lg);
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .audio-btn {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        /* Link Output Result Box */
+        .link-output-box {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px dashed var(--primary);
+            padding: 16px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+        }
+        .generated-url {
+            word-break: break-all;
+            font-size: 0.85rem;
+            color: var(--primary);
+            margin: 10px 0;
+            direction: ltr;
+            font-family: monospace;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: #000;
+            font-weight: 800;
+            padding: 12px 28px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 1000;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body data-theme="gold-luxury">
+
+    <!-- Ambient Glowing Background Orbs -->
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <main class="glass-card">
+
+        <!-- ==================== MODE 1: CREATOR STUDIO (صانع الهدايا) ==================== -->
+        <section id="creator-section" class="app-section active">
+            <h1 class="title-gradient" style="font-size: 2rem; margin-bottom: 6px;">صانع الهدايا التفاعلية ✨</h1>
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">صمم تجربة مفاجأة ساحرة ومخصصة لمن تحب بنقرة واحدة</p>
+
+            <form id="gift-creator-form" onsubmit="generateGiftLink(event)">
+                
+                <!-- Occasion Type -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-cake-candles"></i> اختر المناسبة</label>
+                    <select id="field-occasion" onchange="updateOccasionPresets()">
+                        <option value="birthday">🎉 عيد ميلاد سعيد</option>
+                        <option value="love">💖 ذكرى زواج / حب</option>
+                        <option value="success">🎓 نجاح / تخرج</option>
+                        <option value="appreciation">✨ شكر وتقدير</option>
+                        <option value="custom">🎁 مناسبة خاصة أخرى</option>
+                    </select>
                 </div>
-                <p class="tap-hint">اضغط على الصندوق لفتح الهدية ✨</p>
+
+                <!-- Custom Title (If custom) -->
+                <div class="form-group" id="group-custom-title" style="display:none;">
+                    <label class="form-label"><i class="fa-solid fa-pen-nib"></i> عنوان المناسبة المخصص</label>
+                    <input type="text" id="field-custom-title" class="input-control" placeholder="مثال: مبارك الخطوبة يا غالي">
+                </div>
+
+                <!-- Recipient Info Grid -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                        <label class="form-label"><i class="fa-solid fa-user"></i> اسم الشخص (المستلم)</label>
+                        <input type="text" id="field-recipient-name" class="input-control" placeholder="مثال: عبد الله" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fa-solid fa-venus-mars"></i> الجنس</label>
+                        <select id="field-gender">
+                            <option value="male">ولد (شاب)</option>
+                            <option value="female">بنت (فتاة)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Age / Extra Tag -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-hourglass-half"></i> العمر (اختياري)</label>
+                    <input type="number" id="field-age" class="input-control" placeholder="مثال: 24">
+                </div>
+
+                <!-- Sender Info -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-paper-plane"></i> من صاحب الهدية؟</label>
+                    <input type="text" id="field-sender-name" class="input-control" placeholder="اسمك أو اكتب 'مجهول' / 'محب مجهول'">
+                </div>
+
+                <!-- Visual Theme Selection -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-palette"></i> اختر ثيم التصميم</label>
+                    <div class="theme-grid">
+                        <div class="theme-tile selected" onclick="selectThemeTile(this, 'gold-luxury')">
+                            <span class="theme-dot" style="background: #ffd700;"></span> الذهبي الفاخر
+                        </div>
+                        <div class="theme-tile" onclick="selectThemeTile(this, 'romantic-rose')">
+                            <span class="theme-dot" style="background: #ff4b6e;"></span> الوردي الرومانسي
+                        </div>
+                        <div class="theme-tile" onclick="selectThemeTile(this, 'cyber-neon')">
+                            <span class="theme-dot" style="background: #05d9e8;"></span> السايبر نيون
+                        </div>
+                        <div class="theme-tile" onclick="selectThemeTile(this, 'midnight-purple')">
+                            <span class="theme-dot" style="background: #9d4edd;"></span> البنفسجي الساحر
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Message -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-envelope-open-text"></i> نص الرسالة / أمنياتك له</label>
+                    <textarea id="field-message" rows="3" class="input-control" placeholder="اكتب هنا كلمتك الدافئة والخاصة..."></textarea>
+                </div>
+
+                <!-- Optional Media (Photo & Audio) -->
+                <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-image"></i> رابط صورة خاصة (اختياري)</label>
+                    <input type="url" id="field-photo-url" class="input-control" placeholder="https://example.com/photo.jpg">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label"><i class="fa-solid fa-music"></i> رابط موسيقى / أغنية MP3 (اختياري)</label>
+                    <input type="url" id="field-audio-url" class="input-control" placeholder="رابط مباشر لملف صوتي MP3">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary" style="margin-top: 10px;">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> إنشاء رابط الهدية المخصص
+                </button>
+            </form>
+
+            <!-- Output Created Link Dialog -->
+            <div id="result-box" class="link-output-box" style="display:none;">
+                <h3 style="color: var(--primary); font-size: 1.1rem;"><i class="fa-solid fa-circle-check"></i> تم إنشاء الهدية بنجاح!</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">شاركي الرابط أدناه مع صاحب الهدية فوراً:</p>
+                
+                <div id="generated-link-display" class="generated-url"></div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;">
+                    <button class="btn btn-primary" onclick="copyGiftLink()">
+                        <i class="fa-solid fa-copy"></i> نسخ الرابط
+                    </button>
+                    <button class="btn btn-secondary" onclick="previewCreatedGift()">
+                        <i class="fa-solid fa-eye"></i> معاينة الهدية
+                    </button>
+                </div>
             </div>
         </section>
 
-        <!-- مرحلة 2: عرض البطاقة والمناسبة -->
-        <section id="card-stage" class="stage hidden">
-            <div class="badge" id="event-badge">عيد ميلاد سعيد 🎉</div>
-            <h1 class="target-name" id="display-name">صديقي العزيز</h1>
+
+        <!-- ==================== MODE 2: INTERACTIVE GIFT VIEWER (عرض الهدية) ==================== -->
+        <section id="viewer-section" class="app-section">
             
-            <div class="age-counter" id="age-box">
-                <span class="age-number" id="display-age">0</span>
-                <span class="age-label">عاماً من التألق ✨</span>
+            <!-- STEP A: Tap Gift Box -->
+            <div id="gift-stage" class="gift-stage-wrapper" onclick="unlockGift()">
+                <div class="person-badge" id="view-occasion-badge">مفاجأة خاصة 🎉</div>
+                <h2 style="font-size: 1.8rem; margin-top: 8px;">لديك هدية جديدة من <span id="view-intro-sender" style="color:var(--primary);">...</span>!</h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 6px;">اضغط على صندوق الهدايا أدناه لفتحه ✨</p>
+
+                <div class="gift-box-3d" id="interactive-gift-box">
+                    <div class="gift-bow"></div>
+                    <div class="gift-lid"></div>
+                    <div class="gift-body">
+                        <div class="gift-ribbon-v"></div>
+                        <div class="gift-ribbon-h"></div>
+                    </div>
+                </div>
             </div>
 
-            <div class="message-box">
-                <p id="display-message">كل عام وأنت بألف خير، أتمنى لك سنة مليئة بالنجاح والسعادة وتحقيق كل أحلامك!</p>
+            <!-- STEP B: Revealed Content -->
+            <div id="reveal-stage" style="display: none; text-align: center;">
+                
+                <!-- Cake & Candle (Shows specifically for birthdays) -->
+                <div class="cake-container" id="birthday-cake-box">
+                    <p style="font-size: 0.85rem; color: var(--primary); margin-bottom: 25px;">انقر على الشمعة لإطفائها وأتمنى أمنية! 🕯️</p>
+                    <div class="candle" onclick="extinguishCandle(this)">
+                        <div class="flame"></div>
+                    </div>
+                    <div class="cake"></div>
+                </div>
+
+                <div class="person-badge" id="view-final-badge">عيد ميلاد سعيد 🎉</div>
+                <h1 class="person-name title-gradient" id="view-recipient-name">اسم الشخص</h1>
+                <div class="person-meta" id="view-meta-info">...</div>
+
+                <!-- Custom Photo Frame -->
+                <div class="photo-frame" id="view-photo-container">
+                    <img id="view-photo-element" src="" alt="Gift Image">
+                </div>
+
+                <!-- Emotional Message Card -->
+                <div class="message-card">
+                    <p id="view-message-body"></p>
+                    <div class="sender-tag" id="view-sender-tag">— من: فلان</div>
+                </div>
+
+                <!-- Audio Music Player Controls -->
+                <div class="audio-bar" id="view-audio-bar">
+                    <div style="display:flex; align-items:center; gap: 10px;">
+                        <button class="audio-btn" onclick="toggleAudio()"><i class="fa-solid fa-music" id="audio-icon"></i></button>
+                        <span style="font-size: 0.85rem; color: var(--text-muted);" id="audio-status-text">الموسيقى الخلفية شغالـة ✨</span>
+                    </div>
+                    <button class="btn btn-secondary" style="width:auto; padding: 8px 14px; font-size:0.8rem;" onclick="fireExtraConfetti()">
+                        🎉 ألعاب نارية
+                    </button>
+                </div>
+
+                <!-- Create Your Own Gift CTA -->
+                <div style="margin-top: 25px;">
+                    <button class="btn btn-secondary" onclick="switchToCreatorMode()">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> اصنع هدية مثل هذه لأصدقائك
+                    </button>
+                </div>
             </div>
 
-            <!-- زر النسخ للمشاركة -->
-            <div class="share-area">
-                <button class="btn-primary" onclick="copyCustomLink()">
-                    <span class="icon">🔗</span> انسخ رابط الهدية المخصص
-                </button>
-                <p class="copied-toast" id="toast">تم نسخ الرابط المخصص بنجاح!</p>
-            </div>
         </section>
 
     </main>
 
-    <script src="script.js"></script>
+    <!-- Audio Element -->
+    <audio id="bg-audio" loop preload="auto"></audio>
+
+    <!-- Toast Notification -->
+    <div id="toast-msg" class="toast">تم نسخ الرابط المخصص بنجاح! 🚀</div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Preset Default Melodies
+        const PRESET_MUSIC = {
+            birthday: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a2b53a.mp3?filename=happy-birthday-155461.mp3",
+            love: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112282.mp3",
+            default: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=soft-piano-10781.mp3"
+        };
+
+        let currentGiftConfig = null;
+        let isAudioPlaying = false;
+        let selectedTheme = "gold-luxury";
+
+        // Initialize App on Page Load
+        document.addEventListener("DOMContentLoaded", () => {
+            checkUrlHashData();
+        });
+
+        // Theme Selection Logic
+        function selectThemeTile(element, themeKey) {
+            document.querySelectorAll('.theme-tile').forEach(tile => tile.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedTheme = themeKey;
+            document.body.setAttribute('data-theme', themeKey);
+        }
+
+        // Show/Hide Custom Title Input
+        function updateOccasionPresets() {
+            const val = document.getElementById('field-occasion').value;
+            const customGroup = document.getElementById('group-custom-title');
+            customGroup.style.display = (val === 'custom') ? 'block' : 'none';
+        }
+
+        // Generate URL and Compressed State
+        function generateGiftLink(e) {
+            e.preventDefault();
+
+            const occasion = document.getElementById('field-occasion').value;
+            const customTitle = document.getElementById('field-custom-title').value;
+            const recipientName = document.getElementById('field-recipient-name').value.trim();
+            const gender = document.getElementById('field-gender').value;
+            const age = document.getElementById('field-age').value.trim();
+            const senderName = document.getElementById('field-sender-name').value.trim() || 'مجهول';
+            const message = document.getElementById('field-message').value.trim();
+            const photoUrl = document.getElementById('field-photo-url').value.trim();
+            const audioUrl = document.getElementById('field-audio-url').value.trim();
+
+            const config = {
+                o: occasion,
+                ct: customTitle,
+                rn: recipientName,
+                g: gender,
+                a: age,
+                sn: senderName,
+                m: message,
+                p: photoUrl,
+                au: audioUrl,
+                t: selectedTheme
+            };
+
+            // Compress to Base64 Hash string
+            const jsonString = JSON.stringify(config);
+            const encodedHash = btoa(encodeURIComponent(jsonString));
+
+            // Build short URL format
+            const baseUrl = window.location.origin + window.location.pathname;
+            const fullGiftUrl = `${baseUrl}#gift=${encodedHash}`;
+
+            currentGiftConfig = config;
+
+            // Display generated short link
+            document.getElementById('generated-link-display').innerText = fullGiftUrl;
+            document.getElementById('result-box').style.display = 'block';
+            showToast('تم إعداد رابط الهدية بنجاح! 🎁');
+        }
+
+        // Copy generated link
+        function copyGiftLink() {
+            const linkText = document.getElementById('generated-link-display').innerText;
+            navigator.clipboard.writeText(linkText).then(() => {
+                showToast('تم نسخ الرابط إلى الحافظة! 📋');
+            });
+        }
+
+        // Check URL for Gift Data on Load
+        function checkUrlHashData() {
+            const hash = window.location.hash;
+            if (hash && hash.includes('#gift=')) {
+                try {
+                    const encodedData = hash.replace('#gift=', '');
+                    const jsonString = decodeURIComponent(atob(encodedData));
+                    const config = JSON.parse(jsonString);
+                    
+                    if (config && config.rn) {
+                        currentGiftConfig = config;
+                        renderGiftExperience(config);
+                    }
+                } catch (err) {
+                    console.error("Invalid Gift Hash", err);
+                    switchToCreatorMode();
+                }
+            } else {
+                switchToCreatorMode();
+            }
+        }
+
+        // Render Experience Mode
+        function renderGiftExperience(cfg) {
+            // Apply Theme
+            document.body.setAttribute('data-theme', cfg.t || 'gold-luxury');
+
+            // Switch view
+            document.getElementById('creator-section').classList.remove('active');
+            document.getElementById('viewer-section').classList.add('active');
+
+            // Set Badges & Titles
+            let badgeText = "مفاجأة خاصة ✨";
+            if (cfg.o === 'birthday') badgeText = "🎉 عيد ميلاد سعيد";
+            else if (cfg.o === 'love') badgeText = "💖 ذكرى حب جميلة";
+            else if (cfg.o === 'success') badgeText = "🎓 ألف مبروك النجاح";
+            else if (cfg.o === 'custom' && cfg.ct) badgeText = cfg.ct;
+
+            document.getElementById('view-occasion-badge').innerText = badgeText;
+            document.getElementById('view-final-badge').innerText = badgeText;
+            document.getElementById('view-intro-sender').innerText = cfg.sn;
+            document.getElementById('view-recipient-name').innerText = cfg.rn;
+
+            // Gender / Meta text
+            let metaText = "";
+            if (cfg.a) {
+                metaText += `العمر المميز: ${cfg.a} عاماً ✨ `;
+            }
+            document.getElementById('view-meta-info').innerText = metaText;
+
+            // Message Body
+            document.getElementById('view-message-body').innerText = cfg.m || "أتمنى لك أياماً مليئة بالفرح والسعادة والنجاح دائماً!";
+            document.getElementById('view-sender-tag').innerText = `— من: ${cfg.sn}`;
+
+            // Photo Frame Handling
+            const photoBox = document.getElementById('view-photo-container');
+            const photoEl = document.getElementById('view-photo-element');
+            if (cfg.p) {
+                photoEl.src = cfg.p;
+                photoBox.style.display = 'block';
+            } else {
+                photoBox.style.display = 'none';
+            }
+
+            // Cake Setup for Birthdays
+            const cakeBox = document.getElementById('birthday-cake-box');
+            cakeBox.style.display = (cfg.o === 'birthday') ? 'block' : 'none';
+
+            // Audio Setup
+            const audioEl = document.getElementById('bg-audio');
+            if (cfg.au) {
+                audioEl.src = cfg.au;
+            } else if (cfg.o === 'birthday') {
+                audioEl.src = PRESET_MUSIC.birthday;
+            } else if (cfg.o === 'love') {
+                audioEl.src = PRESET_MUSIC.love;
+            } else {
+                audioEl.src = PRESET_MUSIC.default;
+            }
+        }
+
+        // Unlock Interactive Gift Box
+        function unlockGift() {
+            const giftBox = document.getElementById('interactive-gift-box');
+            giftBox.classList.add('opened');
+
+            // Fire Confetti
+            fireExtraConfetti();
+
+            // Play Music
+            playAudio();
+
+            setTimeout(() => {
+                document.getElementById('gift-stage').style.display = 'none';
+                document.getElementById('reveal-stage').style.display = 'block';
+            }, 600);
+        }
+
+        // Blow Candle Interactive Function
+        function extinguishCandle(candleEl) {
+            const flame = candleEl.querySelector('.flame');
+            flame.classList.add('extinguished');
+            fireExtraConfetti();
+            showToast('تمت الأُمينة بنجاح! 🎂✨');
+        }
+
+        // Audio Controls
+        function playAudio() {
+            const audioEl = document.getElementById('bg-audio');
+            audioEl.play().then(() => {
+                isAudioPlaying = true;
+                updateAudioUI();
+            }).catch(e => console.log("Audio autoplay restricted:", e));
+        }
+
+        function toggleAudio() {
+            const audioEl = document.getElementById('bg-audio');
+            if (isAudioPlaying) {
+                audioEl.pause();
+                isAudioPlaying = false;
+            } else {
+                audioEl.play();
+                isAudioPlaying = true;
+            }
+            updateAudioUI();
+        }
+
+        function updateAudioUI() {
+            const icon = document.getElementById('audio-icon');
+            const text = document.getElementById('audio-status-text');
+            if (isAudioPlaying) {
+                icon.className = "fa-solid fa-volume-high";
+                text.innerText = "الموسيقى تعمل الأن 🎵";
+            } else {
+                icon.className = "fa-solid fa-volume-xmark";
+                text.innerText = "تم إيقاف الموسيقى";
+            }
+        }
+
+        // Confetti Burst Effect
+        function fireExtraConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 100,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+            }
+        }
+
+        // Helper UI Switchers
+        function previewCreatedGift() {
+            if (currentGiftConfig) {
+                renderGiftExperience(currentGiftConfig);
+            }
+        }
+
+        function switchToCreatorMode() {
+            window.location.hash = '';
+            document.getElementById('viewer-section').classList.remove('active');
+            document.getElementById('creator-section').classList.add('active');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast-msg');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
 </body>
-</html>
+    </html>
