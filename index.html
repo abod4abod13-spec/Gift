@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هدية خاصة لك ✨</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <!-- خلفية النجوم والتأثيرات الضوئية -->
+    <div class="stars-container"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+
+    <!-- الحاوية الرئيسية -->
+    <main class="main-card">
+        
+        <!-- مرحلة 1: صندوق الهدايا المغلق -->
+        <section id="gift-stage" class="stage active">
+            <div class="gift-box-wrapper" onclick="openGift()">
+                <div class="gift-box">
+                    <div class="lid">
+                        <div class="ribbon-bow"></div>
+                    </div>
+                    <div class="box-body"></div>
+                </div>
+                <p class="tap-hint">اضغط على الصندوق لفتح الهدية ✨</p>
+            </div>
+        </section>
+
+        <!-- مرحلة 2: عرض البطاقة والمناسبة -->
+        <section id="card-stage" class="stage hidden">
+            <div class="badge" id="event-badge">عيد ميلاد سعيد 🎉</div>
+            <h1 class="target-name" id="display-name">صديقي العزيز</h1>
+            
+            <div class="age-counter" id="age-box">
+                <span class="age-number" id="display-age">0</span>
+                <span class="age-label">عاماً من التألق ✨</span>
+            </div>
+
+            <div class="message-box">
+                <p id="display-message">كل عام وأنت بألف خير، أتمنى لك سنة مليئة بالنجاح والسعادة وتحقيق كل أحلامك!</p>
+            </div>
+
+            <!-- زر النسخ للمشاركة -->
+            <div class="share-area">
+                <button class="btn-primary" onclick="copyCustomLink()">
+                    <span class="icon">🔗</span> انسخ رابط الهدية المخصص
+                </button>
+                <p class="copied-toast" id="toast">تم نسخ الرابط المخصص بنجاح!</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
